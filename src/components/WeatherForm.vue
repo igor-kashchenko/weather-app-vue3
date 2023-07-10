@@ -22,6 +22,8 @@ const store = useWeatherStore();
 
 const handleAddCity = (city: string) => {
   store.fetchWeatherData(city);
+
+  inputValue.value = '';
 };
 </script>
 

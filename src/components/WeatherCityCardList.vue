@@ -12,7 +12,7 @@ import { useWeatherStore } from '@/stores/weather';
 
 const store = useWeatherStore();
 
-const weatherData = store.weatherData;
+const weatherData = store.displayedWeatherData;
 </script>
 
 <style scoped>

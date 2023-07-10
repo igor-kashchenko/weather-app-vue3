@@ -1,17 +1,21 @@
 <script setup lang="ts">
-import WeatherCityCardList from './components/WeatherCityCardList.vue';
-import WeatherForm from './components/WeatherForm.vue';
+import { watch } from 'vue';
+import { RouterView } from 'vue-router';
+import { useWeatherStore } from './stores/weather';
 
+const store = useWeatherStore();
+
+const weatherData = store.weatherData;
+
+watch(weatherData, (newValue) => {
+  console.log(newValue);
+});
 </script>
 
 <template>
-  <v-container class="h-screen container" max-width="1200">
-    <h2 class="text-h2 text-center mb-6">Weather App</h2>
-
-    <WeatherForm />
-
-    <WeatherCityCardList />
-  </v-container>  
+  <main>
+    <RouterView />
+  </main>
 </template>
 
 <style scoped>

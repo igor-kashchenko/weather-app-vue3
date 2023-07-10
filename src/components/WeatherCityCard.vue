@@ -4,7 +4,7 @@
       <div class="d-flex align-center justify-space-between">
         <p class="text-h5">{{weather.name}}, {{weather.sys.country}}</p>
 
-        <v-icon icon="mdi-close"></v-icon>
+        <v-icon icon="mdi-close" class='icon' @click="handleDeleteCity(props.weather.name)"></v-icon>
       </div>
 
       <v-row class="align-center justify-space-between py-4 ma-0">
@@ -17,7 +17,7 @@
            <p class="text-h6">{{weather.weather[0].main}}</p>
         </v-col>
         
-        <v-col cols="4" class="d-flex flex-column align-end pa-0 pr-4">
+        <v-col cols="4" class="d-flex flex-column align-end pa-0">
             <p class="text-h6">{{roundTemp(weather.main.temp)}}°C</p>
    
             <span class="text-caption text-end">High: {{roundTemp(weather.main.temp_max)}}°C </span>
@@ -36,11 +36,11 @@
 </template>
 
 <script setup lang="ts">
-import { toRefs } from 'vue'; 
 import type { CityWeather } from '@/types/types';
 import { ICON_URL } from '@/utils/fetchCityWeatherData';
 import { roundTemp } from '@/utils/roundTemp';
 import { parseTimeStamp } from '@/utils/parseTimeStamp';
+import { useWeatherStore } from '@/stores/weather';
 
 type Props = {
   weather: CityWeather;
@@ -48,10 +48,11 @@ type Props = {
 
 const props = defineProps<Props>();
 
-const { weather } = toRefs(props);
+const store = useWeatherStore();
 
-console.log(weather.value.weather[0].icon);
-
+const handleDeleteCity = (city: string) => {
+  store.deleteCityWeather(city);
+};
 </script>
 
 <style scoped>
@@ -64,4 +65,15 @@ p, span {
   font-family: 'Mont', sans-serif !important;
 }
 
+.icon {
+  color: #808080;
+}
+
+.icon:hover {
+  color: #555;
+}
+
+.icon:active {
+  color: #000;
+}
 </style>
