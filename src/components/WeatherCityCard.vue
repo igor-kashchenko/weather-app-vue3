@@ -1,8 +1,10 @@
 <template>
   <v-col cols="3">
-    <v-container class="container elevation-4 rounded" >
+    <v-container class="cont elevation-4 rounded" >
       <div class="d-flex align-center justify-space-between">
-        <p class="text-h5">{{weather.name}}, {{weather.sys.country}}</p>
+        <router-link :to='`/cityWeather/${weather.name}`' class="link icon">
+          <p class="text-h5">{{weather.name}}, {{weather.sys.country}}</p>
+        </router-link>
 
         <v-icon icon="mdi-close" class='icon' @click="handleDeleteCity(props.weather.name)"></v-icon>
       </div>
@@ -56,24 +58,14 @@ const handleDeleteCity = (city: string) => {
 </script>
 
 <style scoped>
-.container {
-  padding: 20px !important;
- 
-}
-
 p, span {
   font-family: 'Mont', sans-serif !important;
 }
-
-.icon {
-  color: #808080;
+.cont {
+  padding: 20px !important;
 }
 
-.icon:hover {
-  color: #555;
-}
-
-.icon:active {
-  color: #000;
+.link {
+  text-decoration: none;
 }
 </style>

@@ -8,6 +8,26 @@ body {
 
 }
 
+.container {
+  max-width: 1200px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.icon {
+  color: #808080;
+  cursor: pointer;
+  transition: color 0.2s linear;
+}
+
+.icon:hover {
+  color: #555;
+}
+
+.icon:active {
+  color: #000;
+}
+
 @font-face {
   font-family: 'Mont';
   src: url('./fonts/Mont-Bold.ttf');

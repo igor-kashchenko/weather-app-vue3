@@ -1,11 +1,11 @@
 <template>
-  <v-container class="h-screen container" max-width="1200">
-    <h2 class="text-h2 text-center mb-6">Weather App</h2>
+  <v-container class="h-screen container">
+    <p class="text-h2 text-center mb-6">Weather App</p>
 
     <WeatherForm />
 
     <WeatherCityCardList />
-  </v-container>  
+  </v-container>
 </template>
 
 <script setup lang="ts">
@@ -14,5 +14,7 @@ import WeatherCityCardList from '@/components/WeatherCityCardList.vue';
 </script>
 
 <style scoped>
-
+  p {
+    font-family: 'Mont', sans-serif !important;
+  }
 </style>

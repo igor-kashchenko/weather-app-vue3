@@ -18,7 +18,7 @@ type Main = {
   pressure: number;
   humidity: number;
   sea_level?: number;
-  grnd_level?: number
+  grnd_level?: number;
 }
 
 type Wind = {
