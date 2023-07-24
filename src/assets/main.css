@@ -15,17 +15,17 @@ body {
 }
 
 .icon {
-  color: #808080;
+  color: #808080 !important;
   cursor: pointer;
   transition: color 0.2s linear;
 }
 
 .icon:hover {
-  color: #555;
+  color: #555 !important;
 }
 
 .icon:active {
-  color: #000;
+  color: #000 !important;
 }
 
 @font-face {

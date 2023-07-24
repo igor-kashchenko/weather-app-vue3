@@ -31,7 +31,7 @@
       <div class="d-flex align-center justify-space-between">
         <p class="text-h6">{{parseTimeStamp(weather.dt)}}</p>
 
-        <v-icon icon="mdi-refresh"></v-icon>
+        <v-icon icon="mdi-refresh" class='icon' @click="handleUpdateCity(props.weather.name, props.weather.dt)"></v-icon>
       </div>
     </v-container>
 </v-col>
@@ -54,6 +54,10 @@ const store = useWeatherStore();
 
 const handleDeleteCity = (city: string) => {
   store.deleteCityWeather(city);
+};
+
+const handleUpdateCity = (city: string, dt: number) => {
+  store.updateCityWeather(city, dt);
 };
 </script>
 

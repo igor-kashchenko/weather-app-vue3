@@ -4,23 +4,23 @@
 
     <BreadCrumbs />
 
-    <v-container class="mt-4">
-      <v-row >
-        <v-col cols="6" class="elevation-10 rounded pa-4">
+    <v-container class="mt-4 pa-0">
+      <v-row no-gutters class="flex-nowrap">
+        <v-col cols="6" class="elevation-10 rounded pa-4 mr-4">
           <div class="d-flex justify-space-between mb-2">
-            <p>
+            <p class="text-body-1">
               {{ parseTimeStamp(dt) }}
             </p>
 
-            <p>
+            <p class="text-body-1">
               {{ coordinates }}
             </p>
           </div>
 
           <div class="d-flex justify-space-between mb-2">
-            <p>{{cityName }}, {{country}}</p>
+            <p class="text-h5">{{cityName }}, {{country}}</p>
 
-            <p>{{timeZoneGMT}}</p>
+            <p class="text-h5">{{timeZoneGMT}}</p>
           </div>
 
           <v-row class="pa-4 ma-0 elevation-4 rounded mb-6">
@@ -30,16 +30,16 @@
             </v-col>
 
             <v-col cols="4" class="d-flex flex-column justify-center pa-4">
-              <p class="text-h6">{{main}}</p>
+              <p class="text-h4">{{main}}</p>
               <p class="">{{description}}</p>
-              <p class="text-h6">{{roundTemp(temp)}}°C</p>
+              <p class="text-h5">{{roundTemp(temp)}}°C</p>
             </v-col>
             
             <v-col cols="4" class="d-flex flex-column justify-center pa-4 text-start">
-              <p class="text-h6">Feels like: {{roundTemp(feels_like)}}°C</p>
+              <p class="text-body-1">Feels like: {{roundTemp(feels_like)}}°C</p>
     
-              <span class="text-caption">High: {{roundTemp(temp_max)}}°C </span>
-              <span class="text-caption">Low: {{roundTemp(temp_min)}}°C</span>
+              <span class="text-body-1">High: {{roundTemp(temp_max)}}°C </span>
+              <span class="text-body-1">Low: {{roundTemp(temp_min)}}°C</span>
             </v-col>
           </v-row>
 
@@ -114,7 +114,9 @@
           </v-row>
         </v-col>
 
-        <v-col cols="6"> chart </v-col>
+        <v-col cols="6" class="elevation-10 rounded pa-4">
+          <LineChart />
+        </v-col>
       </v-row>
     </v-container>
   </v-container>
@@ -124,7 +126,7 @@
 import BreadCrumbs from '@/components/BreadCrumbs.vue';
 import { useWeatherStore } from '@/stores/weather';
 import type { CityWeather } from '@/types/types';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { parseTimeStamp } from '@/utils/parseTimeStamp';
 import { formatCoordinates } from '@/utils/formatCoordinates';
@@ -132,17 +134,21 @@ import { formatTimezone } from '@/utils/formatTimezone';
 import { ICON_URL } from '@/utils/fetchCityWeatherData';
 import { roundTemp } from '@/utils/roundTemp';
 import { formatWindDirection } from '@/utils/formatWindDirection';
+import LineChart from '@/components/LineChart.vue';
 
 const store = useWeatherStore();
 const weatherData = store.weatherData;
 
 const foundCity = ref<CityWeather>();
 
+onMounted(async () => {
+  await store.fetchCityWeatherForecast(cityName);
+});
+
 const route = useRoute();
 const paramsName = route.params.name;
 
 foundCity.value = weatherData.find((city) => city.name === paramsName)!;
-
 
 const {
   coord: { lon, lat },
@@ -161,14 +167,14 @@ const {
 const coordinates = formatCoordinates(lat, lon);
 const timeZoneGMT = formatTimezone(timezone);
 
-const { direction, src } = formatWindDirection(deg);
+const { src } = formatWindDirection(deg);
 
 const sunriseTime = parseTimeStamp(sunrise, 'sun');
 const sunsetTime = parseTimeStamp(sunset, 'sun');
 </script>
 
 <style scoped>
-p {
+p, span {
   font-family: 'Mont', sans-serif !important;
 }
 

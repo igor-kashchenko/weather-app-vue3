@@ -60,3 +60,14 @@ export type CityWeather = {
   name: string;
   cod: number;
 }
+
+export type Hour = {
+  datetime: string;
+  temp: number;
+}
+
+export type CityWeatherForecast = {
+  address: string;
+  hoursData: Hour[];
+  datetimeEpoch: number;
+}
