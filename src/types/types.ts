@@ -58,7 +58,7 @@ export type CityWeather = {
   timezone: number;
   id: number;
   name: string;
-  cod: number;
+  cod: string;
 }
 
 export type Hour = {

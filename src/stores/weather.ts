@@ -12,17 +12,27 @@ export const useWeatherStore = defineStore('weather', () => {
   const cityWeatherForecasts = ref<CityWeatherForecast[]>([]);
 
   const fetchWeatherData = async (city: string): Promise<CityWeather | undefined> => {
-    const responseData: CityWeather = await fetchCityWeatherData(city);
+    try {
+      const responseData: CityWeather = await fetchCityWeatherData(city);
 
-    const hasCityAlreadyFetched = weatherData.value.some((cityWeather) => cityWeather.name === city);
+      const isSucceeded = responseData.cod !== '404';
 
-    if (!hasCityAlreadyFetched) {
-      weatherData.value.push(responseData);
-    } else {
-      return;
+      const hasCityAlreadyFetched = weatherData.value.some((cityWeather) => cityWeather.name === city);
+
+      if (!hasCityAlreadyFetched && isSucceeded) {
+        weatherData.value.push(responseData);
+      } else {
+        return;
+      }
+
+      return responseData;
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(`Error fetching weather data: ${error.message}`);
+      } else {
+        console.error('Unknown error occurred:', error);
+      }
     }
-
-    return responseData;
   };
 
   const deleteCityWeather = (city: string) => {

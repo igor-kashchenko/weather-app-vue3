@@ -2,7 +2,7 @@
   <v-container class="h-screen container">
     <p class="text-center text-h3">Weather Forecast</p>
 
-    <BreadCrumbs />
+    <BreadCrumbs :city="cityName" :dt="dt"/>
 
     <v-container class="mt-4 pa-0">
       <v-row no-gutters class="flex-nowrap">
@@ -135,20 +135,44 @@ import { ICON_URL } from '@/utils/fetchCityWeatherData';
 import { roundTemp } from '@/utils/roundTemp';
 import { formatWindDirection } from '@/utils/formatWindDirection';
 import LineChart from '@/components/LineChart.vue';
+import router from '@/router';
 
 const store = useWeatherStore();
 const weatherData = store.weatherData;
 
 const foundCity = ref<CityWeather>();
 
+const mockCityData: CityWeather = {
+  base: '',
+  cod: 'mock',
+  id: 0,
+  coord: { lon: 0, lat: 0 },
+  weather: [{ id: 0, main: '', description: '', icon: '' }],
+  main: { temp: 0, feels_like: 0, temp_min: 0, temp_max: 0, pressure: 0, humidity: 0, sea_level: 0, grnd_level: 0 },
+  visibility: 0,
+  wind: { speed: 0, deg: 0, gust: 0 }, 
+  rain: { '1h': 0, '3h': 0 }, 
+  clouds: { all: 0 },
+  dt: 0,
+  sys: { country: '', sunrise: 0, sunset: 0, type: 0, id: 0 }, 
+  timezone: 0,
+  name: '',
+};
+
 onMounted(async () => {
-  await store.fetchCityWeatherForecast(cityName);
+  if(cityName) {
+    await store.fetchCityWeatherForecast(cityName);
+  }
 });
 
 const route = useRoute();
 const paramsName = route.params.name;
 
-foundCity.value = weatherData.find((city) => city.name === paramsName)!;
+foundCity.value = weatherData.find((city) => city.name === paramsName) || mockCityData;
+
+if (foundCity.value.cod === 'mock') {
+  router.push('/');
+}
 
 const {
   coord: { lon, lat },
@@ -156,13 +180,13 @@ const {
   main: { temp, feels_like, temp_min, temp_max, pressure, humidity, sea_level, grnd_level },
   visibility,
   wind: { speed, deg },
-  rain: { '1h': rain1h } = {},
+  rain: { '1h': rain1h = '1h' } = {},
   clouds: { all },
   dt,
   sys: { country, sunrise, sunset },
   timezone,
   name: cityName
-} = foundCity.value;
+} = foundCity.value; 
 
 const coordinates = formatCoordinates(lat, lon);
 const timeZoneGMT = formatTimezone(timezone);
