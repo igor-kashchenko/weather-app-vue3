@@ -35,7 +35,7 @@ export const fetchCityForecast = async (city: string) => {
     };
   } catch (error) {
     if(error instanceof Error) {
-      alert(error.message);
+      console.error(error.message);
     } else {
       console.error(error);
     }

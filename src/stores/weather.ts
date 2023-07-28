@@ -28,7 +28,7 @@ export const useWeatherStore = defineStore('weather', () => {
       return responseData;
     } catch (error) {
       if (error instanceof Error) {
-        alert(`Error fetching weather data: ${error.message}`);
+        console.error(`Error fetching weather data: ${error.message}`);
       } else {
         console.error('Unknown error occurred:', error);
       }
@@ -57,13 +57,14 @@ export const useWeatherStore = defineStore('weather', () => {
     if (!isAlreadyExists) {
       try {
         const responseData = await fetchCityForecast(city) as CityWeatherForecast;
-
-        cityWeatherForecasts.value.push(responseData);
+        if (responseData) {
+          cityWeatherForecasts.value.push(responseData);
+        }
         
         return responseData;
       } catch (error) {
         if (error instanceof Error) {
-          alert(`Error fetching weather data: ${error.message}`);
+          console.error(`Error fetching weather data: ${error.message}`);
         } else {
           console.error('Unknown error occurred:', error);
         }

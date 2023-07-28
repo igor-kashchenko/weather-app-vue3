@@ -1,9 +1,12 @@
 <template>
-  <Line :data="chartData" :options="options" v-if="hasWeatherForecast" />
+  <Line :data="chartData" :options="options" v-if="weatherForecast && !props.isFetching" />
 
-    <div class="d-flex justify-center align-center h-100" v-else>
-      <v-progress-circular indeterminate></v-progress-circular>
-    </div>
+  <div class="d-flex justify-center align-center h-100" v-else>
+    <h2 v-if="!weatherForecast && !props.isFetching">forecast is unavailable</h2>
+
+    <v-progress-circular indeterminate v-else></v-progress-circular>
+  </div>
+
 </template>
 
 <script setup lang="ts">
@@ -44,7 +47,11 @@ const weatherForecast = computed(() => {
   return cityWeatherForecasts.find((cityWeather) => cityWeather.address === name);
 });
 
-const hasWeatherForecast = computed(() => !!weatherForecast.value);
+type Props = {
+  isFetching: boolean;
+}
+
+const props = defineProps<Props>();
 
 const chartData = {
   labels: [] as string[],
@@ -106,7 +113,7 @@ const updateChartData = () => {
 };
 
 watchEffect(() => {
-  if (hasWeatherForecast.value) {
+  if (weatherForecast.value) {
     updateChartData();
   }
 });

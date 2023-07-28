@@ -115,7 +115,7 @@
         </v-col>
 
         <v-col cols="6" class="elevation-10 rounded pa-4">
-          <LineChart />
+          <LineChart :isFetching="isFetching"/>
         </v-col>
       </v-row>
     </v-container>
@@ -159,9 +159,13 @@ const mockCityData: CityWeather = {
   name: '',
 };
 
+const isFetching = ref(true);
+
 onMounted(async () => {
-  if(cityName) {
+  if (cityName) {
+    isFetching.value = true;
     await store.fetchCityWeatherForecast(cityName);
+    isFetching.value = false;
   }
 });
 
