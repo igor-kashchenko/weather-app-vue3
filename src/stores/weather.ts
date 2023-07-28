@@ -55,16 +55,24 @@ export const useWeatherStore = defineStore('weather', () => {
     const isAlreadyExists = cityWeatherForecasts.value.some((cityWeather) => cityWeather.address === city);
 
     if (!isAlreadyExists) {
-      const responseData: CityWeatherForecast = await fetchCityForecast(city);
+      try {
+        const responseData = await fetchCityForecast(city) as CityWeatherForecast;
 
-      cityWeatherForecasts.value.push(responseData);
+        cityWeatherForecasts.value.push(responseData);
+        
+        return responseData;
+      } catch (error) {
+        if (error instanceof Error) {
+          alert(`Error fetching weather data: ${error.message}`);
+        } else {
+          console.error('Unknown error occurred:', error);
+        }
 
-      return responseData;
+        return undefined;
+      }
     } else {
-
       return;
     }
-    
   };
 
   return { weatherData, fetchWeatherData, deleteCityWeather, displayedWeatherData, updateCityWeather, fetchCityWeatherForecast, cityWeatherForecasts };

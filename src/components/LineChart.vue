@@ -1,9 +1,9 @@
 <template>
-  <Line :data="chartData" :options="options" v-if="weatherForecast"/>
+  <Line :data="chartData" :options="options" v-if="hasWeatherForecast" />
 
-  <div class="d-flex justify-center align-center h-100" v-else>
-    <v-progress-circular indeterminate></v-progress-circular>
-  </div>
+    <div class="d-flex justify-center align-center h-100" v-else>
+      <v-progress-circular indeterminate></v-progress-circular>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -43,6 +43,8 @@ const cityWeatherForecasts = store.cityWeatherForecasts;
 const weatherForecast = computed(() => {
   return cityWeatherForecasts.find((cityWeather) => cityWeather.address === name);
 });
+
+const hasWeatherForecast = computed(() => !!weatherForecast.value);
 
 const chartData = {
   labels: [] as string[],
@@ -104,7 +106,9 @@ const updateChartData = () => {
 };
 
 watchEffect(() => {
-  updateChartData();
+  if (hasWeatherForecast.value) {
+    updateChartData();
+  }
 });
 </script>
 
